@@ -2,7 +2,6 @@
 
 import codecs
 import json
-import os
 import re
 import subprocess
 import threading
@@ -211,7 +210,10 @@ class WindowsTerminal(TerminalInterface):
         Returns:
             Parsed metadata or None if not found/invalid
         """
-        pattern = f"{re.escape(CMD_OUTPUT_PS1_BEGIN)}(.+?){re.escape(CMD_OUTPUT_PS1_END)}"
+        pattern = (
+            f"{re.escape(CMD_OUTPUT_PS1_BEGIN)}"
+            f"(.+?){re.escape(CMD_OUTPUT_PS1_END)}"
+        )
         match = re.search(pattern, output, re.DOTALL)
         if match:
             try:
@@ -245,7 +247,8 @@ class WindowsTerminal(TerminalInterface):
         if not is_special_key and not _internal:
             self._get_buffered_output(clear=True)
         
-        # For regular commands (not special keys or internal), append PS1 marker with metadata
+        # For regular commands (not special keys or internal),
+        # append PS1 marker with metadata
         if not is_special_key and text.strip() and not _internal:
             # Set command running flag
             self._command_running_event.set()
@@ -256,11 +259,17 @@ class WindowsTerminal(TerminalInterface):
             metadata_cmd = (
                 f"; Write-Host '{ps1_begin}'; "
                 # Use $? to check success (True/False), convert to 0/1
-                "$exit_code = if ($?) { if ($null -ne $LASTEXITCODE) { $LASTEXITCODE } else { 0 } } else { 1 }; "
-                "$py_path = (Get-Command python -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source); "
-                "$meta = @{pid=$PID; exit_code=$exit_code; username=$env:USERNAME; "
-                "hostname=$env:COMPUTERNAME; working_dir=(Get-Location).Path.Replace('\\', '/'); "
-                "py_interpreter_path=if ($py_path) { $py_path } else { $null }}; "
+                "$exit_code = if ($?) { "
+                "if ($null -ne $LASTEXITCODE) { $LASTEXITCODE } "
+                "else { 0 } } else { 1 }; "
+                "$py_path = (Get-Command python -ErrorAction "
+                "SilentlyContinue | Select-Object -ExpandProperty Source); "
+                "$meta = @{pid=$PID; exit_code=$exit_code; "
+                "username=$env:USERNAME; "
+                "hostname=$env:COMPUTERNAME; "
+                "working_dir=(Get-Location).Path.Replace('\\', '/'); "
+                "py_interpreter_path=if ($py_path) { $py_path } "
+                "else { $null }}; "
                 "Write-Host (ConvertTo-Json $meta -Compress); "
                 f"Write-Host '{ps1_end}'"
             )
@@ -329,7 +338,7 @@ class WindowsTerminal(TerminalInterface):
             # Return current state - empty buffer doesn't mean command isn't running
             # (command might be executing without output yet)
             return self._command_running_event.is_set()
-        except (OSError, IOError) as e:
+        except OSError as e:
             logger.warning(f"Error reading screen in is_running: {e}")
             return self._command_running_event.is_set()
         except Exception as e:
