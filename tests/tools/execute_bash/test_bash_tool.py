@@ -9,7 +9,7 @@ from openhands.sdk.agent import Agent
 from openhands.sdk.conversation.state import ConversationState
 from openhands.sdk.llm import LLM
 from openhands.sdk.workspace import LocalWorkspace
-from openhands.tools.execute_bash import (
+from openhands.tools.execute_terminal import (
     BashTool,
     ExecuteBashAction,
     ExecuteBashObservation,

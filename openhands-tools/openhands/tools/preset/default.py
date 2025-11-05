@@ -17,7 +17,7 @@ logger = get_logger(__name__)
 def register_default_tools(enable_browser: bool = True) -> None:
     """Register the default set of tools."""
     # Tools are now automatically registered when imported
-    from openhands.tools.execute_bash import BashTool
+    from openhands.tools.execute_terminal import BashTool
     from openhands.tools.file_editor import FileEditorTool
     from openhands.tools.task_tracker import TaskTrackerTool
 
@@ -42,7 +42,7 @@ def get_default_tools(
     register_default_tools(enable_browser=enable_browser)
 
     # Import tools to access their name attributes
-    from openhands.tools.execute_bash import BashTool
+    from openhands.tools.execute_terminal import BashTool
     from openhands.tools.file_editor import FileEditorTool
     from openhands.tools.task_tracker import TaskTrackerTool
 

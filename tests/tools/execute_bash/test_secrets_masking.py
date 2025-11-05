@@ -8,8 +8,8 @@ from pydantic import SecretStr
 from openhands.sdk.agent import Agent
 from openhands.sdk.conversation import Conversation
 from openhands.sdk.llm import LLM
-from openhands.tools.execute_bash import ExecuteBashAction, ExecuteBashObservation
-from openhands.tools.execute_bash.impl import BashExecutor
+from openhands.tools.execute_terminal import ExecuteBashAction, ExecuteBashObservation
+from openhands.tools.execute_terminal.impl import BashExecutor
 
 
 def test_bash_executor_without_conversation():

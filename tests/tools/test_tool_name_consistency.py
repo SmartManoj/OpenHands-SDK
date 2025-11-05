@@ -1,7 +1,7 @@
 """Test that tool_name class variables are consistent with automatic naming."""
 
 from openhands.tools.browser_use import BrowserToolSet
-from openhands.tools.execute_bash import BashTool
+from openhands.tools.execute_terminal import BashTool
 from openhands.tools.file_editor import FileEditorTool
 from openhands.tools.glob import GlobTool
 from openhands.tools.grep import GrepTool

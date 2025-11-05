@@ -25,7 +25,7 @@ def test_camel_to_snake_conversion():
 
 def test_real_tools_have_correct_names():
     """Test that real tools have the expected automatic names."""
-    from openhands.tools.execute_bash import BashTool
+    from openhands.tools.execute_terminal import BashTool
     from openhands.tools.file_editor import FileEditorTool
     from openhands.tools.glob import GlobTool
     from openhands.tools.grep import GrepTool
@@ -44,7 +44,7 @@ def test_real_tools_have_correct_names():
 def test_tool_name_consistency():
     """Test that tool names are consistent across imports."""
     # Import the same tool multiple times to ensure consistency
-    from openhands.tools.execute_bash import (
+    from openhands.tools.execute_terminal import (
         BashTool as BashTool1,
         BashTool as BashTool2,
     )

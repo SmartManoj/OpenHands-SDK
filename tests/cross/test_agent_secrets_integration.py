@@ -12,9 +12,9 @@ from openhands.sdk.conversation.impl.local_conversation import LocalConversation
 from openhands.sdk.conversation.secret_source import LookupSecret, SecretSource
 from openhands.sdk.llm import LLM
 from openhands.sdk.tool import Tool, register_tool
-from openhands.tools.execute_bash import BashTool
-from openhands.tools.execute_bash.definition import ExecuteBashAction
-from openhands.tools.execute_bash.impl import BashExecutor
+from openhands.tools.execute_terminal import BashTool
+from openhands.tools.execute_terminal.definition import ExecuteBashAction
+from openhands.tools.execute_terminal.impl import BashExecutor
 
 
 # -----------------------

@@ -10,7 +10,7 @@ from openhands.sdk import (
     Conversation,
 )
 from openhands.sdk.tool import Tool
-from openhands.tools.execute_bash import BashTool
+from openhands.tools.execute_terminal import BashTool
 from openhands.tools.file_editor import FileEditorTool
 
 

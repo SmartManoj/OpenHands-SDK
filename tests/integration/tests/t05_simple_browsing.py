@@ -8,7 +8,7 @@ import time
 from openhands.sdk import get_logger
 from openhands.sdk.conversation import get_agent_final_response
 from openhands.sdk.tool import Tool, register_tool
-from openhands.tools.execute_bash import BashTool
+from openhands.tools.execute_terminal import BashTool
 from openhands.tools.file_editor import FileEditorTool
 from tests.integration.base import BaseIntegrationTest, TestResult
 

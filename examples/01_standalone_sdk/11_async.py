@@ -20,7 +20,7 @@ from openhands.sdk import (
 from openhands.sdk.conversation.types import ConversationCallbackType
 from openhands.sdk.tool import Tool
 from openhands.sdk.utils.async_utils import AsyncCallbackWrapper
-from openhands.tools.execute_bash import BashTool
+from openhands.tools.execute_terminal import BashTool
 from openhands.tools.file_editor import FileEditorTool
 from openhands.tools.task_tracker import TaskTrackerTool
 

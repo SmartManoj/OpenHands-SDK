@@ -16,7 +16,7 @@ from openhands.sdk.llm import (
     TextContent,
 )
 from openhands.sdk.workspace import LocalWorkspace
-from openhands.tools.execute_bash.definition import (
+from openhands.tools.execute_terminal.definition import (
     ExecuteBashAction,
     ExecuteBashObservation,
 )

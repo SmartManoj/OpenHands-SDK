@@ -17,8 +17,8 @@ import pytest
 
 from openhands.sdk import TextContent
 from openhands.sdk.logger import get_logger
-from openhands.tools.execute_bash.definition import ExecuteBashAction
-from openhands.tools.execute_bash.terminal import (
+from openhands.tools.execute_terminal.definition import ExecuteBashAction
+from openhands.tools.execute_terminal.terminal import (
     TerminalCommandStatus,
     create_terminal_session,
 )
