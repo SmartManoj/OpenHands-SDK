@@ -12,7 +12,7 @@ from openhands.sdk.conversation.impl.local_conversation import LocalConversation
 from openhands.sdk.conversation.secret_source import LookupSecret, SecretSource
 from openhands.sdk.llm import LLM
 from openhands.sdk.tool import Tool, register_tool
-from openhands.tools.execute_terminal import BashTool
+from openhands.tools.execute_terminal import TerminalTool
 from openhands.tools.execute_terminal.definition import ExecuteBashAction
 from openhands.tools.execute_terminal.impl import BashExecutor
 
@@ -29,8 +29,8 @@ def llm() -> LLM:
 
 @pytest.fixture
 def tools() -> list[Tool]:
-    register_tool("BashTool", BashTool)
-    return [Tool(name="BashTool")]
+    register_tool("TerminalTool", TerminalTool)
+    return [Tool(name="TerminalTool")]
 
 
 @pytest.fixture

@@ -18,7 +18,7 @@ from openhands.sdk.conversation.state import (
 from openhands.sdk.security.confirmation_policy import ConfirmRisky
 from openhands.sdk.security.llm_analyzer import LLMSecurityAnalyzer
 from openhands.sdk.tool import Tool
-from openhands.tools.execute_terminal import BashTool
+from openhands.tools.execute_terminal import TerminalTool
 from openhands.tools.file_editor import FileEditorTool
 
 
@@ -106,7 +106,7 @@ llm = LLM(
 # Tools
 tools = [
     Tool(
-        name=BashTool.name,
+        name=TerminalTool.name,
     ),
     Tool(name=FileEditorTool.name),
 ]

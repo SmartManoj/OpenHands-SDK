@@ -51,7 +51,7 @@ from openhands.sdk import (
     Conversation,
 )
 from openhands.sdk.tool import Tool
-from openhands.tools.execute_terminal import BashTool
+from openhands.tools.execute_terminal import TerminalTool
 from openhands.tools.file_editor import FileEditorTool
 
 
@@ -71,7 +71,7 @@ llm = LLM(
 cwd = os.getcwd()
 tools = [
     Tool(
-        name=BashTool.name,
+        name=TerminalTool.name,
     ),
     Tool(name=FileEditorTool.name),
 ]

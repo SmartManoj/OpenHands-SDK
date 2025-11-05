@@ -10,7 +10,7 @@ from unittest.mock import Mock
 
 from openhands.sdk import Agent, Conversation
 from openhands.sdk.tool import Tool, register_tool
-from openhands.tools.execute_terminal import BashExecutor, BashTool
+from openhands.tools.execute_terminal import BashExecutor, TerminalTool
 
 
 def test_conversation_close_calls_executor_close(mock_llm):
@@ -21,7 +21,7 @@ def test_conversation_close_calls_executor_close(mock_llm):
         bash_executor.close = Mock()
 
         def _make_tool(conv_state, **params):
-            tools = BashTool.create(conv_state)
+            tools = TerminalTool.create(conv_state)
             tool = tools[0]
             return [tool.model_copy(update={"executor": bash_executor})]
 
@@ -49,7 +49,7 @@ def test_conversation_del_calls_close(mock_llm):
         bash_executor.close = Mock()
 
         def _make_tool(conv_state, **params):
-            tools = BashTool.create(conv_state)
+            tools = TerminalTool.create(conv_state)
             tool = tools[0]
             return [tool.model_copy(update={"executor": bash_executor})]
 
@@ -80,7 +80,7 @@ def test_conversation_close_handles_executor_exceptions(mock_llm):
         bash_executor.close = Mock(side_effect=Exception("Test exception"))
 
         def _make_tool(conv_state, **params):
-            tools = BashTool.create(conv_state)
+            tools = TerminalTool.create(conv_state)
             tool = tools[0]
             return [tool.model_copy(update={"executor": bash_executor})]
 
@@ -107,7 +107,7 @@ def test_conversation_close_skips_none_executors(mock_llm):
         register_tool(
             "test_execute_terminal",
             lambda conv_state, **params: [
-                BashTool.create(conv_state)[0].model_copy(update={"executor": None})
+                TerminalTool.create(conv_state)[0].model_copy(update={"executor": None})
             ],
         )
 

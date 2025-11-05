@@ -20,7 +20,7 @@ from openhands.sdk import (
     get_logger,
 )
 from openhands.sdk.tool.spec import Tool
-from openhands.tools.execute_terminal import BashTool
+from openhands.tools.execute_terminal import TerminalTool
 from openhands.tools.file_editor import FileEditorTool
 from openhands.tools.task_tracker import TaskTrackerTool
 
@@ -46,7 +46,7 @@ agent = Agent(
     llm=llm,
     tools=[
         Tool(
-            name=BashTool.name,
+            name=TerminalTool.name,
         ),
         Tool(name=FileEditorTool.name),
         Tool(name=TaskTrackerTool.name),

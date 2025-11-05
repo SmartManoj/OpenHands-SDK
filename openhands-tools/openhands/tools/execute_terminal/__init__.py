@@ -1,8 +1,8 @@
 # Core tool interface
 from openhands.tools.execute_terminal.definition import (
-    BashTool,
     ExecuteBashAction,
     ExecuteBashObservation,
+    TerminalTool,
 )
 from openhands.tools.execute_terminal.impl import BashExecutor
 
@@ -16,7 +16,7 @@ from openhands.tools.execute_terminal.terminal import (
 
 __all__ = [
     # === Core Tool Interface ===
-    "BashTool",
+    "TerminalTool",
     "ExecuteBashAction",
     "ExecuteBashObservation",
     "BashExecutor",

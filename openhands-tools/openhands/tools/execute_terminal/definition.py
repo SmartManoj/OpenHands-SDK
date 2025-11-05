@@ -219,7 +219,7 @@ TOOL_DESCRIPTION = """Execute a bash command in the terminal within a persistent
 """  # noqa
 
 
-class BashTool(ToolDefinition[ExecuteBashAction, ExecuteBashObservation]):
+class TerminalTool(ToolDefinition[ExecuteBashAction, ExecuteBashObservation]):
     """A ToolDefinition subclass that automatically initializes a BashExecutor with auto-detection."""  # noqa: E501
 
     @classmethod
@@ -230,8 +230,8 @@ class BashTool(ToolDefinition[ExecuteBashAction, ExecuteBashObservation]):
         no_change_timeout_seconds: int | None = None,
         terminal_type: Literal["tmux", "subprocess"] | None = None,
         executor: ToolExecutor | None = None,
-    ) -> Sequence["BashTool"]:
-        """Initialize BashTool with executor parameters.
+    ) -> Sequence["TerminalTool"]:
+        """Initialize TerminalTool with executor parameters.
 
         Args:
             conv_state: Conversation state to get working directory from.
@@ -280,4 +280,4 @@ class BashTool(ToolDefinition[ExecuteBashAction, ExecuteBashObservation]):
 
 
 # Automatically register the tool when this module is imported
-register_tool(BashTool.name, BashTool)
+register_tool(TerminalTool.name, TerminalTool)

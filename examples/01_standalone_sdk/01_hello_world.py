@@ -1,7 +1,7 @@
 import os
 
 from openhands.sdk import LLM, Agent, Conversation, Tool
-from openhands.tools.execute_terminal import BashTool
+from openhands.tools.execute_terminal import TerminalTool
 from openhands.tools.file_editor import FileEditorTool
 from openhands.tools.task_tracker import TaskTrackerTool
 
@@ -14,7 +14,7 @@ llm = LLM(
 agent = Agent(
     llm=llm,
     tools=[
-        Tool(name=BashTool.name),
+        Tool(name=TerminalTool.name),
         Tool(name=FileEditorTool.name),
         Tool(name=TaskTrackerTool.name),
     ],

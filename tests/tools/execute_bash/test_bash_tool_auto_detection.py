@@ -1,4 +1,4 @@
-"""Tests for BashTool auto-detection functionality."""
+"""Tests for TerminalTool auto-detection functionality."""
 
 import tempfile
 import uuid
@@ -10,7 +10,7 @@ from openhands.sdk.agent import Agent
 from openhands.sdk.conversation.state import ConversationState
 from openhands.sdk.llm import LLM
 from openhands.sdk.workspace import LocalWorkspace
-from openhands.tools.execute_terminal import BashTool
+from openhands.tools.execute_terminal import TerminalTool
 from openhands.tools.execute_terminal.definition import ExecuteBashAction
 from openhands.tools.execute_terminal.impl import BashExecutor
 from openhands.tools.execute_terminal.terminal import (
@@ -32,12 +32,12 @@ def _create_conv_state(working_dir: str) -> ConversationState:
 
 
 def test_default_auto_detection():
-    """Test that BashTool auto-detects the appropriate session type."""
+    """Test that TerminalTool auto-detects the appropriate session type."""
     with tempfile.TemporaryDirectory() as temp_dir:
-        tools = BashTool.create(_create_conv_state(temp_dir))
+        tools = TerminalTool.create(_create_conv_state(temp_dir))
         tool = tools[0]
 
-        # BashTool always has an executor
+        # TerminalTool always has an executor
         assert tool.executor is not None
         executor = tool.executor
         assert isinstance(executor, BashExecutor)
@@ -59,7 +59,7 @@ def test_forced_terminal_types():
     """Test forcing specific session types."""
     with tempfile.TemporaryDirectory() as temp_dir:
         # Test forced subprocess session
-        tools = BashTool.create(
+        tools = TerminalTool.create(
             _create_conv_state(temp_dir), terminal_type="subprocess"
         )
         tool = tools[0]
@@ -86,7 +86,7 @@ def test_unix_auto_detection(mock_system):
             "openhands.tools.execute_terminal.terminal.factory._is_tmux_available",
             return_value=True,
         ):
-            tools = BashTool.create(_create_conv_state(temp_dir))
+            tools = TerminalTool.create(_create_conv_state(temp_dir))
             tool = tools[0]
             assert tool.executor is not None
             executor = tool.executor
@@ -99,7 +99,7 @@ def test_unix_auto_detection(mock_system):
             "openhands.tools.execute_terminal.terminal.factory._is_tmux_available",
             return_value=False,
         ):
-            tools = BashTool.create(_create_conv_state(temp_dir))
+            tools = TerminalTool.create(_create_conv_state(temp_dir))
             tool = tools[0]
             assert tool.executor is not None
             executor = tool.executor
@@ -111,7 +111,7 @@ def test_unix_auto_detection(mock_system):
 def test_session_parameters():
     """Test that session parameters are properly passed."""
     with tempfile.TemporaryDirectory() as temp_dir:
-        tools = BashTool.create(
+        tools = TerminalTool.create(
             _create_conv_state(temp_dir),
             username="testuser",
             no_change_timeout_seconds=60,
@@ -132,7 +132,7 @@ def test_backward_compatibility():
     """Test that the simplified API still works."""
     with tempfile.TemporaryDirectory() as temp_dir:
         # This should work just like before
-        tools = BashTool.create(_create_conv_state(temp_dir))
+        tools = TerminalTool.create(_create_conv_state(temp_dir))
         tool = tools[0]
 
         assert tool.executor is not None
@@ -145,7 +145,7 @@ def test_backward_compatibility():
 def test_tool_metadata():
     """Test that tool metadata is preserved."""
     with tempfile.TemporaryDirectory() as temp_dir:
-        tools = BashTool.create(_create_conv_state(temp_dir))
+        tools = TerminalTool.create(_create_conv_state(temp_dir))
         tool = tools[0]
 
         assert tool.name == "bash"
@@ -157,7 +157,7 @@ def test_tool_metadata():
 def test_session_lifecycle():
     """Test session lifecycle management."""
     with tempfile.TemporaryDirectory() as temp_dir:
-        tools = BashTool.create(
+        tools = TerminalTool.create(
             _create_conv_state(temp_dir), terminal_type="subprocess"
         )
         tool = tools[0]

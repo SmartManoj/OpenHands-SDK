@@ -1,7 +1,7 @@
 """Test that tool_name class variables are consistent with automatic naming."""
 
 from openhands.tools.browser_use import BrowserToolSet
-from openhands.tools.execute_terminal import BashTool
+from openhands.tools.execute_terminal import TerminalTool
 from openhands.tools.file_editor import FileEditorTool
 from openhands.tools.glob import GlobTool
 from openhands.tools.grep import GrepTool
@@ -12,7 +12,7 @@ from openhands.tools.task_tracker import TaskTrackerTool
 def test_tool_name_attributes_exist():
     """Test that all tool classes have name class variables."""
     tools = [
-        BashTool,
+        TerminalTool,
         FileEditorTool,
         TaskTrackerTool,
         BrowserToolSet,
@@ -42,7 +42,7 @@ def test_tool_name_attributes_exist():
 def test_tool_name_consistency():
     """Test that name matches the expected snake_case conversion."""
     expected_names = {
-        BashTool: "bash",
+        TerminalTool: "bash",
         FileEditorTool: "file_editor",
         TaskTrackerTool: "task_tracker",
         BrowserToolSet: "browser_tool_set",
@@ -60,7 +60,7 @@ def test_tool_name_consistency():
 def test_tool_name_accessible_at_class_level():
     """Test that name can be accessed at the class level without instantiation."""
     # This should not raise any errors and should return snake_case names
-    assert BashTool.name == "bash"
+    assert TerminalTool.name == "bash"
     assert FileEditorTool.name == "file_editor"
     assert TaskTrackerTool.name == "task_tracker"
     assert BrowserToolSet.name == "browser_tool_set"

@@ -45,7 +45,7 @@ from openhands.sdk import (
     get_logger,
 )
 from openhands.sdk.tool import Tool, register_tool
-from openhands.tools.execute_terminal import BashTool
+from openhands.tools.execute_terminal import TerminalTool
 from openhands.tools.file_editor import FileEditorTool
 from openhands.tools.task_tracker import TaskTrackerTool
 
@@ -678,12 +678,12 @@ def run_debugging_session(
 ):
     """Run the debugging session with the given configuration."""
     # Register and set up tools
-    register_tool("BashTool", BashTool)
+    register_tool("TerminalTool", TerminalTool)
     register_tool("FileEditorTool", FileEditorTool)
     register_tool("TaskTrackerTool", TaskTrackerTool)
 
     tools = [
-        Tool(name="BashTool"),
+        Tool(name="TerminalTool"),
         Tool(name="FileEditorTool"),
         Tool(name="TaskTrackerTool"),
     ]

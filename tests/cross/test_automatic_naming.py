@@ -6,7 +6,7 @@ def test_camel_to_snake_conversion():
     from openhands.sdk.tool.tool import _camel_to_snake
 
     # Test basic conversions
-    assert _camel_to_snake("BashTool") == "bash_tool"
+    assert _camel_to_snake("TerminalTool") == "bash_tool"
     assert _camel_to_snake("FileEditorTool") == "file_editor_tool"
     assert _camel_to_snake("GrepTool") == "grep_tool"
     assert _camel_to_snake("PlanningFileEditorTool") == "planning_file_editor_tool"
@@ -25,7 +25,7 @@ def test_camel_to_snake_conversion():
 
 def test_real_tools_have_correct_names():
     """Test that real tools have the expected automatic names."""
-    from openhands.tools.execute_terminal import BashTool
+    from openhands.tools.execute_terminal import TerminalTool
     from openhands.tools.file_editor import FileEditorTool
     from openhands.tools.glob import GlobTool
     from openhands.tools.grep import GrepTool
@@ -33,7 +33,7 @@ def test_real_tools_have_correct_names():
     from openhands.tools.task_tracker import TaskTrackerTool
 
     # Verify all tools have correct automatic names
-    assert BashTool.name == "bash"
+    assert TerminalTool.name == "bash"
     assert FileEditorTool.name == "file_editor"
     assert GrepTool.name == "grep"
     assert PlanningFileEditorTool.name == "planning_file_editor"
@@ -45,11 +45,11 @@ def test_tool_name_consistency():
     """Test that tool names are consistent across imports."""
     # Import the same tool multiple times to ensure consistency
     from openhands.tools.execute_terminal import (
-        BashTool as BashTool1,
-        BashTool as BashTool2,
+        TerminalTool as TerminalTool1,
+        TerminalTool as TerminalTool2,
     )
 
-    assert BashTool1.name == BashTool2.name == "bash"
+    assert TerminalTool1.name == TerminalTool2.name == "bash"
 
     # Test with different tools
     from openhands.tools.file_editor import FileEditorTool
