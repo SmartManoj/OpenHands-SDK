@@ -73,9 +73,9 @@ class WindowsTerminal(TerminalInterface):
     def _start_session(self) -> None:
         """Start PowerShell session."""
         # Use PowerShell for better Windows compatibility
-        startupinfo = subprocess.STARTUPINFO()
+        startupinfo = subprocess.STARTUPINFO()  # type: ignore[attr-defined]
         # Hide the console window (prevents popup on Windows)
-        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW  # type: ignore[attr-defined]
         
         self.process = subprocess.Popen(
             POWERSHELL_CMD,
