@@ -189,7 +189,6 @@ class TerminalSession(TerminalSessionBase):
         return ExecuteBashObservation.from_text(
             command=command,
             text=command_output,
-            exit_code=metadata.exit_code if metadata.exit_code != -1 else None,
             metadata=metadata,
         )
 
