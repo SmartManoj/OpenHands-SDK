@@ -10,10 +10,10 @@ from openhands.sdk.agent import Agent
 from openhands.sdk.conversation.state import ConversationState
 from openhands.sdk.llm import LLM
 from openhands.sdk.workspace import LocalWorkspace
-from openhands.tools.execute_terminal import TerminalTool
-from openhands.tools.execute_terminal.definition import ExecuteBashAction
-from openhands.tools.execute_terminal.impl import BashExecutor
-from openhands.tools.execute_terminal.terminal import (
+from openhands.tools.terminal import TerminalTool
+from openhands.tools.terminal.definition import ExecuteBashAction
+from openhands.tools.terminal.impl import BashExecutor
+from openhands.tools.terminal.terminal import (
     SubprocessTerminal,
     TerminalSession,
     TmuxTerminal,
@@ -83,7 +83,7 @@ def test_unix_auto_detection(mock_system):
     with tempfile.TemporaryDirectory() as temp_dir:
         # Mock tmux as available
         with patch(
-            "openhands.tools.execute_terminal.terminal.factory._is_tmux_available",
+            "openhands.tools.terminal.terminal.factory._is_tmux_available",
             return_value=True,
         ):
             tools = TerminalTool.create(_create_conv_state(temp_dir))
@@ -96,7 +96,7 @@ def test_unix_auto_detection(mock_system):
 
         # Mock tmux as unavailable
         with patch(
-            "openhands.tools.execute_terminal.terminal.factory._is_tmux_available",
+            "openhands.tools.terminal.terminal.factory._is_tmux_available",
             return_value=False,
         ):
             tools = TerminalTool.create(_create_conv_state(temp_dir))

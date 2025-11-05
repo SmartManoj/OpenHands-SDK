@@ -326,7 +326,7 @@ def test_convert_with_malformed_parameters():
         {
             "role": "assistant",
             "content": (
-                "I'll run the ls command.\n\n<function=execute_terminal>\n"
+                "I'll run the ls command.\n\n<function=terminal>\n"
                 "<parameter=invalid_param>ls</parameter>\n</function>"
             ),
         },

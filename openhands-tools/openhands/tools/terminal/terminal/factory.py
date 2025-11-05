@@ -5,7 +5,7 @@ import subprocess
 from typing import Literal
 
 from openhands.sdk.logger import get_logger
-from openhands.tools.execute_terminal.terminal.terminal_session import TerminalSession
+from openhands.tools.terminal.terminal.terminal_session import TerminalSession
 
 
 logger = get_logger(__name__)
@@ -67,7 +67,7 @@ def create_terminal_session(
     Raises:
         RuntimeError: If the requested session type is not available
     """
-    from openhands.tools.execute_terminal.terminal.terminal_session import (
+    from openhands.tools.terminal.terminal.terminal_session import (
         TerminalSession,
     )
 
@@ -76,7 +76,7 @@ def create_terminal_session(
         if terminal_type == "tmux":
             if not _is_tmux_available():
                 raise RuntimeError("Tmux is not available on this system")
-            from openhands.tools.execute_terminal.terminal.tmux_terminal import (
+            from openhands.tools.terminal.terminal.tmux_terminal import (
                 TmuxTerminal,
             )
 
@@ -84,7 +84,7 @@ def create_terminal_session(
             terminal = TmuxTerminal(work_dir, username)
             return TerminalSession(terminal, no_change_timeout_seconds)
         elif terminal_type == "subprocess":
-            from openhands.tools.execute_terminal.terminal.subprocess_terminal import (
+            from openhands.tools.terminal.terminal.subprocess_terminal import (
                 SubprocessTerminal,
             )
 
@@ -102,7 +102,7 @@ def create_terminal_session(
     else:
         # On Unix-like systems, prefer tmux if available, otherwise use subprocess
         if _is_tmux_available():
-            from openhands.tools.execute_terminal.terminal.tmux_terminal import (
+            from openhands.tools.terminal.terminal.tmux_terminal import (
                 TmuxTerminal,
             )
 
@@ -110,7 +110,7 @@ def create_terminal_session(
             terminal = TmuxTerminal(work_dir, username)
             return TerminalSession(terminal, no_change_timeout_seconds)
         else:
-            from openhands.tools.execute_terminal.terminal.subprocess_terminal import (
+            from openhands.tools.terminal.terminal.subprocess_terminal import (
                 SubprocessTerminal,
             )
 

@@ -7,9 +7,9 @@ import uuid
 import libtmux
 
 from openhands.sdk.logger import get_logger
-from openhands.tools.execute_terminal.constants import HISTORY_LIMIT
-from openhands.tools.execute_terminal.metadata import CmdOutputMetadata
-from openhands.tools.execute_terminal.terminal import TerminalInterface
+from openhands.tools.terminal.constants import HISTORY_LIMIT
+from openhands.tools.terminal.metadata import CmdOutputMetadata
+from openhands.tools.terminal.terminal import TerminalInterface
 
 
 logger = get_logger(__name__)
@@ -170,7 +170,7 @@ class TmuxTerminal(TerminalInterface):
         try:
             content = self.read_screen()
             # If the screen ends with our PS1 prompt, no command is running
-            from openhands.tools.execute_terminal.constants import CMD_OUTPUT_PS1_END
+            from openhands.tools.terminal.constants import CMD_OUTPUT_PS1_END
 
             return not content.rstrip().endswith(CMD_OUTPUT_PS1_END.rstrip())
         except Exception:

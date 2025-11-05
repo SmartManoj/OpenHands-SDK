@@ -13,13 +13,13 @@ import uuid
 from collections import deque
 
 from openhands.sdk.logger import get_logger
-from openhands.tools.execute_terminal.constants import (
+from openhands.tools.terminal.constants import (
     CMD_OUTPUT_PS1_BEGIN,
     CMD_OUTPUT_PS1_END,
     HISTORY_LIMIT,
 )
-from openhands.tools.execute_terminal.metadata import CmdOutputMetadata
-from openhands.tools.execute_terminal.terminal import TerminalInterface
+from openhands.tools.terminal.metadata import CmdOutputMetadata
+from openhands.tools.terminal.terminal import TerminalInterface
 
 
 logger = get_logger(__name__)

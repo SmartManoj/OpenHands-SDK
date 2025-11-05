@@ -9,8 +9,8 @@ from openhands.sdk import (
 )
 from openhands.sdk.conversation.secret_source import SecretSource
 from openhands.sdk.tool import Tool
-from openhands.tools.execute_terminal import TerminalTool
 from openhands.tools.file_editor import FileEditorTool
+from openhands.tools.terminal import TerminalTool
 
 
 # Configure LLM

@@ -1,12 +1,12 @@
 """Test that tool_name class variables are consistent with automatic naming."""
 
 from openhands.tools.browser_use import BrowserToolSet
-from openhands.tools.execute_terminal import TerminalTool
 from openhands.tools.file_editor import FileEditorTool
 from openhands.tools.glob import GlobTool
 from openhands.tools.grep import GrepTool
 from openhands.tools.planning_file_editor import PlanningFileEditorTool
 from openhands.tools.task_tracker import TaskTrackerTool
+from openhands.tools.terminal import TerminalTool
 
 
 def test_tool_name_attributes_exist():

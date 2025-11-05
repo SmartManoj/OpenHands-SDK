@@ -20,9 +20,9 @@ from openhands.sdk import (
 from openhands.sdk.conversation.types import ConversationCallbackType
 from openhands.sdk.tool import Tool
 from openhands.sdk.utils.async_utils import AsyncCallbackWrapper
-from openhands.tools.execute_terminal import TerminalTool
 from openhands.tools.file_editor import FileEditorTool
 from openhands.tools.task_tracker import TaskTrackerTool
+from openhands.tools.terminal import TerminalTool
 
 
 logger = get_logger(__name__)

@@ -21,11 +21,11 @@ from openhands.sdk.tool import (
     register_tool,
 )
 from openhands.sdk.utils import maybe_truncate
-from openhands.tools.execute_terminal.constants import (
+from openhands.tools.terminal.constants import (
     MAX_CMD_OUTPUT_SIZE,
     NO_CHANGE_TIMEOUT_SECONDS,
 )
-from openhands.tools.execute_terminal.metadata import CmdOutputMetadata
+from openhands.tools.terminal.metadata import CmdOutputMetadata
 
 
 class ExecuteBashAction(Action):
@@ -246,7 +246,7 @@ class TerminalTool(ToolDefinition[ExecuteBashAction, ExecuteBashObservation]):
                          - On Unix-like: tmux if available, otherwise subprocess
         """
         # Import here to avoid circular imports
-        from openhands.tools.execute_terminal.impl import BashExecutor
+        from openhands.tools.terminal.impl import BashExecutor
 
         working_dir = conv_state.workspace.working_dir
         if not os.path.isdir(working_dir):

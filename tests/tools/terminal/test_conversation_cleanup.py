@@ -10,7 +10,7 @@ from unittest.mock import Mock
 
 from openhands.sdk import Agent, Conversation
 from openhands.sdk.tool import Tool, register_tool
-from openhands.tools.execute_terminal import BashExecutor, TerminalTool
+from openhands.tools.terminal import BashExecutor, TerminalTool
 
 
 def test_conversation_close_calls_executor_close(mock_llm):
@@ -25,12 +25,12 @@ def test_conversation_close_calls_executor_close(mock_llm):
             tool = tools[0]
             return [tool.model_copy(update={"executor": bash_executor})]
 
-        register_tool("test_execute_terminal", _make_tool)
+        register_tool("test_terminal", _make_tool)
 
         # Create agent and conversation
         agent = Agent(
             llm=mock_llm,
-            tools=[Tool(name="test_execute_terminal")],
+            tools=[Tool(name="test_terminal")],
         )
         conversation = Conversation(agent=agent, workspace=temp_dir)
 
@@ -53,12 +53,12 @@ def test_conversation_del_calls_close(mock_llm):
             tool = tools[0]
             return [tool.model_copy(update={"executor": bash_executor})]
 
-        register_tool("test_execute_terminal", _make_tool)
+        register_tool("test_terminal", _make_tool)
 
         # Create agent and conversation
         agent = Agent(
             llm=mock_llm,
-            tools=[Tool(name="test_execute_terminal")],
+            tools=[Tool(name="test_terminal")],
         )
         conversation = Conversation(agent=agent, workspace=temp_dir)
 
@@ -84,12 +84,12 @@ def test_conversation_close_handles_executor_exceptions(mock_llm):
             tool = tools[0]
             return [tool.model_copy(update={"executor": bash_executor})]
 
-        register_tool("test_execute_terminal", _make_tool)
+        register_tool("test_terminal", _make_tool)
 
         # Create agent and conversation
         agent = Agent(
             llm=mock_llm,
-            tools=[Tool(name="test_execute_terminal")],
+            tools=[Tool(name="test_terminal")],
         )
         conversation = Conversation(agent=agent, workspace=temp_dir)
 
@@ -105,7 +105,7 @@ def test_conversation_close_skips_none_executors(mock_llm):
 
         # Create a tool with no executor
         register_tool(
-            "test_execute_terminal",
+            "test_terminal",
             lambda conv_state, **params: [
                 TerminalTool.create(conv_state)[0].model_copy(update={"executor": None})
             ],
@@ -114,7 +114,7 @@ def test_conversation_close_skips_none_executors(mock_llm):
         # Create agent and conversation
         agent = Agent(
             llm=mock_llm,
-            tools=[Tool(name="test_execute_terminal")],
+            tools=[Tool(name="test_terminal")],
         )
         conversation = Conversation(agent=agent, workspace=temp_dir)
 

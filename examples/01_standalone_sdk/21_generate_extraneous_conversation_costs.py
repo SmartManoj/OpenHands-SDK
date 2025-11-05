@@ -13,7 +13,7 @@ from openhands.sdk import (
     get_logger,
 )
 from openhands.sdk.tool.spec import Tool
-from openhands.tools.execute_terminal import TerminalTool
+from openhands.tools.terminal import TerminalTool
 
 
 logger = get_logger(__name__)

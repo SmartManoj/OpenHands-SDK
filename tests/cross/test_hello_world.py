@@ -25,8 +25,8 @@ from openhands.sdk.event.llm_convertible import (
     ObservationEvent,
 )
 from openhands.sdk.tool import Tool, register_tool
-from openhands.tools.execute_terminal import TerminalTool
 from openhands.tools.file_editor import FileEditorTool
+from openhands.tools.terminal import TerminalTool
 
 
 class TestHelloWorld:
