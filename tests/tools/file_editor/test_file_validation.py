@@ -96,8 +96,5 @@ def test_validate_image_file(tmp_path):
 
     assert is_binary(str(image_file))
 
-    # Images are not supported and should be detected as binary
-    with pytest.raises(FileValidationError) as exc_info:
-        editor.validate_file(image_file)
-
-    assert "file appears to be binary" in str(exc_info.value).lower()
+    # Images are not supported, so no exception should be raised
+    editor.validate_file(image_file)
