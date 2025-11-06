@@ -21,7 +21,6 @@ from openhands.tools.execute_bash.terminal.interface import (
     TerminalSessionBase,
 )
 from openhands.tools.execute_bash.utils.command import (
-n
     escape_bash_special_chars,
     split_bash_commands,
 )
