@@ -167,7 +167,7 @@ def test_observation_event_visualize():
     assert isinstance(result, Text)
 
     text_content = result.plain
-    assert "Tool: bash" in text_content
+    assert "Tool: terminal" in text_content
     assert "Result:" in text_content
     assert "total 4" in text_content
 

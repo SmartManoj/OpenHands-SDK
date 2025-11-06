@@ -100,7 +100,7 @@ def test_convert_non_fncall_to_fncall_basic():
         {
             "role": "assistant",
             "content": (
-                "I'll run the ls command for you.\n\n<function=bash>\n"
+                "I'll run the ls command for you.\n\n<function=terminal>\n"
                 "<parameter=command>ls</parameter>\n</function>"
             ),
         },
@@ -478,7 +478,7 @@ def test_convert_with_finish_tool():
                     "arguments": '{"command": "ls -la"}',
                 },
             },
-            ("<function=bash>\n<parameter=command>ls -la</parameter>\n</function>"),
+            ("<function=terminal>\n<parameter=command>ls -la</parameter>\n</function>"),
         ),
         # Multiple parameters with different types
         (
