@@ -162,6 +162,7 @@ TOOL_DESCRIPTION = """Custom editing tool for viewing, creating and editing file
 * If a `command` generates a long output, it will be truncated and marked with `<response clipped>`
 * The `undo_edit` command will revert the last edit made to the file at `path`
 * This tool can be used for creating and editing files in plain-text format.
+* Always use absolute file paths
 
 
 Before using this tool:
@@ -172,7 +173,6 @@ Before using this tool:
 When making edits:
    - Ensure the edit results in idiomatic, correct code
    - Do not leave the code in a broken state
-   - Always use absolute file paths (starting with /)
 
 CRITICAL REQUIREMENTS FOR USING THIS TOOL:
 
