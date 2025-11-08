@@ -285,7 +285,7 @@ def draw_event_detail(event: dict[str, Any]) -> None:
     text = get_event_text(event)
     if text:
         st.markdown("**Narrative**")
-        st.code(text)
+        st.code(text, wrap_lines=1)
 
     if event.get("kind") == "ActionEvent" and event.get("action"):
         st.markdown("**Action Payload**")
@@ -293,10 +293,10 @@ def draw_event_detail(event: dict[str, Any]) -> None:
 
     if event.get("kind") == "ObservationEvent" and event.get("observation"):
         st.markdown("**Observation Payload**")
-        st.json(event.get("observation"))
+        st.json(event.get("observation"), expanded=0)
 
     st.markdown("**Raw Event JSON**")
-    st.json(event)
+    st.json(event, expanded=0)
 
 
 def main() -> None:
@@ -450,7 +450,7 @@ def main() -> None:
                 event.get("source", "Unknown"),
             ]
         )
-        with st.expander(label, expanded=False):
+        with st.expander(label, expanded=(idx >= 2)):
             draw_event_detail(event)
 
 
