@@ -294,18 +294,83 @@ class Telemetry(BaseModel):
             ):
                 data["kwargs"].pop("tools")
             with open(fname, "w") as f:
-                f.write(json.dumps(data, default=_safe_json))
+                # Remove circular references before encoding
+                clean_data = _remove_circular_references(data)
+                encoder = _CircularReferenceEncoder()
+                f.write(encoder.encode(clean_data))
         except Exception as e:
             warnings.warn(f"Telemetry logging failed: {e}")
 
 
+def _remove_circular_references(obj: Any, visited: set | None = None) -> Any:
+    """Recursively remove circular references from an object tree."""
+    if visited is None:
+        visited = set()
+
+    obj_id = id(obj)
+
+    # If we've seen this object before, it's a circular reference
+    if obj_id in visited:
+        return "<circular reference>"
+
+    # Handle None, primitives, and strings (no need to track)
+    if obj is None or isinstance(obj, (bool, int, float, str)):
+        return obj
+
+    # Track this object
+    visited.add(obj_id)
+
+    try:
+        # Handle Pydantic models - convert to dict first
+        if isinstance(obj, ModelResponse) or isinstance(obj, ResponsesAPIResponse):
+            return obj.model_dump(mode="json", exclude_none=True)
+
+        # Handle dictionaries
+        if isinstance(obj, dict):
+            return {
+                key: _remove_circular_references(value, visited)
+                for key, value in obj.items()
+            }
+
+        # Handle lists and tuples
+        if isinstance(obj, (list, tuple)):
+            result = [_remove_circular_references(item, visited) for item in obj]
+            return result if isinstance(obj, list) else tuple(result)
+
+        # Handle objects with __dict__
+        if hasattr(obj, "__dict__"):
+            return {
+                key: _remove_circular_references(value, visited)
+                for key, value in obj.__dict__.items()
+            }
+
+        # Fallback to string representation
+        return str(obj)
+    finally:
+        # Remove from visited after processing to allow the same object
+        # to appear in different branches of the tree
+        visited.discard(obj_id)
+
+
+class _CircularReferenceEncoder(json.JSONEncoder):
+    """JSON encoder that handles non-serializable objects."""
+
+    def default(self, obj: Any) -> Any:
+        # Handle Pydantic models
+        if isinstance(obj, ModelResponse) or isinstance(obj, ResponsesAPIResponse):
+            return obj.model_dump(mode="json", exclude_none=True)
+
+        # Fallback to __dict__ or string representation
+        try:
+            return obj.__dict__
+        except Exception:
+            return str(obj)
+
+
 def _safe_json(obj: Any) -> Any:
-    # Centralized serializer for telemetry logs.
-    # Today, responses are Pydantic ModelResponse or ResponsesAPIResponse; rely on it.
+    # Centralized serializer for telemetry logs (kept for backward compatibility).
+    # Prefer using _CircularReferenceEncoder for new code.
     if isinstance(obj, ModelResponse) or isinstance(obj, ResponsesAPIResponse):
-        # Use mode='json' to ensure proper serialization of nested Pydantic models
-        # and avoid PydanticSerializationUnexpectedValue warnings.
-        # exclude_none=True reduces payload size by omitting None fields.
         return obj.model_dump(mode="json", exclude_none=True)
 
     # Fallbacks for non-Pydantic objects used elsewhere in the log payload
