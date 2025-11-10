@@ -459,6 +459,8 @@ class LLM(BaseModel, RetryMixin, NonNativeToolCallingMixin):
 
         # 1) serialize messages
         formatted_messages = self.format_messages_for_llm(messages)
+        if os.environ.get('DEBUG_OH') == '1':
+            formatted_messages = messages
 
         # 2) choose function-calling strategy
         use_native_fc = self.native_tool_calling
@@ -1093,3 +1095,25 @@ class LLM(BaseModel, RetryMixin, NonNativeToolCallingMixin):
                 f"Diff: {pretty_pydantic_diff(self, reconciled)}"
             )
         return reconciled
+
+
+if __name__ == "__main__":
+    # Import all tool types to register them with the discriminated union
+    import openhands.tools.terminal.definition  # noqa: F401
+    import openhands.tools.file_editor.definition  # noqa: F401
+    import openhands.tools.task_tracker.definition  # noqa: F401
+    from openhands.sdk.tool.builtins.finish import FinishTool  # noqa: F401
+    from openhands.sdk.tool.builtins.think import ThinkTool  # noqa: F401
+    from openhands.sdk.tool.tool import ToolDefinition
+    
+    llm = LLM(
+        model="groq/openai/gpt-oss-120b",
+        usage_id="test-llm"
+    )
+    with open('messages.json', 'r') as f:
+        messages = json.load(f)
+    with open('tools.json', 'r') as f:
+        tools_data = json.load(f)
+        tools = [ToolDefinition.model_validate(t) for t in tools_data]
+    
+    print(llm.completion(messages, tools))

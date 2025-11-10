@@ -1,4 +1,5 @@
 import json
+import os
 
 from pydantic import ValidationError
 
@@ -179,6 +180,11 @@ class Agent(AgentBase):
                     extra_body=self.llm.litellm_extra_body,
                 )
             else:
+                if os.environ.get('DEBUG_OH') == '1':
+                    with open('messages.json', 'w') as f:
+                        f.write(json.dumps(self.llm.format_messages_for_llm(_messages), indent=2))
+                    with open('tools.json', 'w') as f:
+                        f.write(json.dumps([t.model_dump() for t in list(self.tools_map.values())], indent=2))
                 llm_response = self.llm.completion(
                     messages=_messages,
                     tools=list(self.tools_map.values()),
