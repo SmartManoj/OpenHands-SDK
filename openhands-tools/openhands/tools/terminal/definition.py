@@ -1,8 +1,8 @@
 """Execute bash tool implementation."""
 
 import os
-from collections.abc import Sequence
 import platform
+from collections.abc import Sequence
 from typing import TYPE_CHECKING, Literal
 
 from pydantic import Field
@@ -299,7 +299,7 @@ class TerminalTool(ToolDefinition[ExecuteBashAction, ExecuteBashObservation]):
             tool_description = TOOL_DESCRIPTION_FOR_WINDOWS
         else:
             tool_description = TOOL_DESCRIPTION_FOR_UNIX
-        
+
         # Initialize the parent ToolDefinition with the executor
         return [
             cls(
