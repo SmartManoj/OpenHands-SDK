@@ -10,7 +10,6 @@ import os
 import shutil
 import tempfile
 import time
-import sys
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
 from typing import Any, ClassVar
