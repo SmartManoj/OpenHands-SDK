@@ -49,9 +49,6 @@ def _check_chromium_available() -> str | None:
 
     for env_var, default in env_vars:
         for vendor, browser, app_dir, executable in browsers:
-            # Skip LOCALAPPDATA for Edge
-            if env_var == "LOCALAPPDATA" and vendor == "Microsoft":
-                continue
             base_path = Path(os.environ.get(env_var, default))
             if base_path:
                 windows_chrome_paths.append(
