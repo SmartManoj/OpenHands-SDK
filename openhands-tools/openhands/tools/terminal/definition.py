@@ -197,8 +197,8 @@ def _load_template(template_name: str) -> str:
     return template_path.read_text(encoding="utf-8")
 
 
-TOOL_DESCRIPTION_FOR_UNIX = _load_template("unix_description.txt")
-TOOL_DESCRIPTION_FOR_WINDOWS = _load_template("windows_description.txt")
+TOOL_DESCRIPTION_FOR_UNIX = _load_template("unix_description.j2")
+TOOL_DESCRIPTION_FOR_WINDOWS = _load_template("windows_description.j2")
 
 
 class TerminalTool(ToolDefinition[TerminalAction, TerminalObservation]):
