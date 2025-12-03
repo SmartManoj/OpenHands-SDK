@@ -13,8 +13,9 @@ logger = get_logger(__name__)
 def _check_chromium_available_windows() -> str | None:
     """Check if a Chromium/Chrome binary is available on Windows.
 
-    Checks common Windows installation paths for Chrome and Edge executables.
-    Also checks Playwright cache detection on Windows using LOCALAPPDATA.
+    Checks:
+    1. Common Windows installation paths for Chrome and Edge executables
+    2. Playwright cache directory using LOCALAPPDATA
     """
     import shutil
 
