@@ -12,7 +12,7 @@ logger = get_logger(__name__)
 
 def _check_chromium_available_windows() -> str | None:
     """Check if a Chromium/Chrome binary is available on Windows.
-    
+
     Checks common Windows installation paths for Chrome and Edge executables.
     Also checks Playwright cache detection on Windows using LOCALAPPDATA.
     """
@@ -73,7 +73,7 @@ class WindowsBrowserToolExecutor(BrowserToolExecutor):
         **config,
     ):
         """Initialize WindowsBrowserToolExecutor with Windows-specific logic.
-        
+
         Args:
             headless: Whether to run browser in headless mode
             allowed_domains: List of allowed domains for browser operations
@@ -85,9 +85,10 @@ class WindowsBrowserToolExecutor(BrowserToolExecutor):
         """
         # Temporarily override the module-level function for Windows
         import openhands.tools.browser_use.impl as impl_module
+
         original_check = impl_module._check_chromium_available
         impl_module._check_chromium_available = _check_chromium_available_windows
-        
+
         try:
             # Call parent constructor which will use our Windows-specific check
             super().__init__(
