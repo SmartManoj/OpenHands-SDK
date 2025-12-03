@@ -25,10 +25,12 @@ jobs:
         timeout-minutes: 60
         steps:
             - name: Wait for agent server to finish build
-              if: github.event_name == 'pull_request'
+              if: >
+                  github.event_name == 'pull_request' &&
+                  github.event.pull_request.head.repo.full_name == github.repository
               uses: lewagon/wait-on-check-action@v1.4.1
               with:
-                  ref: ${{ github.event.pull_request.head.ref }}
+                  ref: ${{ github.event.pull_request.head.sha }}
                   check-name: Build & Push (python-amd64)
                   repo-token: ${{ secrets.GITHUB_TOKEN }}
                   wait-interval: 10
