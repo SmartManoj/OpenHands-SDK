@@ -15,9 +15,7 @@ import sys
 from pathlib import Path
 
 
-EXEMPT_EXAMPLES = {
-    "examples/01_standalone_sdk/31_windows_browsing.py",
-}
+EXEMPT_EXAMPLES: set[str] = set()
 
 
 def find_documented_examples(docs_path: Path) -> set[str]:
