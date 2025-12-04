@@ -16,7 +16,7 @@ from pathlib import Path
 
 
 EXEMPT_EXAMPLES = {
-    "examples/01_standalone_sdk/30_windows.py",
+    "examples/01_standalone_sdk/31_windows.py",
 }
 
 

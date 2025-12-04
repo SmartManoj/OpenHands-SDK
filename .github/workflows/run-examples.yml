@@ -132,7 +132,7 @@ jobs:
                       --run-examples \
                       --examples-results-dir "$RESULTS_DIR" \
                       -n 4 \
-                      -k "not 30_windows.py" \
+                      -k "not 31_windows.py" \
                       || EXIT_CODE=$?
 
                   TIMESTAMP="$(date -u '+%Y-%m-%d %H:%M:%S UTC')"
@@ -228,7 +228,7 @@ jobs:
                       --run-examples \
                       --examples-results-dir "$RESULTS_DIR" \
                       -n auto \
-                      -k "30_windows.py"
+                      -k "31_windows.py"
 
             - name: Upload Windows example results
               if: always()
