@@ -141,7 +141,7 @@ jobs:
                       --run-examples \
                       --examples-results-dir "$RESULTS_DIR" \
                       -n 4 \
-                      -k "not 31_windows.py" \
+                      -k "not 31_windows_browsing.py" \
                       || EXIT_CODE=$?
 
                   if [ -d ".windows-example-results" ]; then
@@ -241,7 +241,7 @@ jobs:
                       --run-examples \
                       --examples-results-dir "$RESULTS_DIR" \
                       -n auto \
-                      -k "31_windows.py"
+                      -k "31_windows_browsing.py"
 
             - name: Upload Windows example results
               if: always()
