@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import sys
 
 from pydantic import SecretStr
 
@@ -44,6 +45,12 @@ agent = Agent(llm=llm, tools=tools)
 llm_messages = []
 
 
+def _safe_preview(text: str, limit: int = 200) -> str:
+    truncated = text[:limit]
+    encoding = getattr(sys.stdout, "encoding", None) or "utf-8"
+    return truncated.encode(encoding, errors="replace").decode(encoding)
+
+
 def conversation_callback(event: Event) -> None:
     if isinstance(event, LLMConvertibleEvent):
         llm_messages.append(event.to_llm_message())
@@ -68,8 +75,8 @@ finally:
 print("=" * 100)
 print("Conversation finished. Got the following LLM messages:")
 for i, message in enumerate(llm_messages):
-    preview = str(message)
-    print(f"Message {i}: {preview[:200]}")
+    preview = _safe_preview(str(message))
+    print(f"Message {i}: {preview}")
 
 cost = llm.metrics.accumulated_cost
 print(f"EXAMPLE_COST: {cost}")

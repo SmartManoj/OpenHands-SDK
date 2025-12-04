@@ -20,7 +20,9 @@ permissions:
 
 jobs:
     test-examples:
-        if: github.event.label.name == 'test-examples' || github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
+        needs: test-examples-windows
+        if: ${{ always() && (github.event.label.name == 'test-examples' || contains(fromJson('["workflow_dispatch","schedule"]'), github.event_name)) 
+            }}
         runs-on: blacksmith-2vcpu-ubuntu-2404
         timeout-minutes: 60
         steps:
@@ -50,6 +52,13 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: '22'
+
+            - name: Download Windows example results
+              if: needs.test-examples-windows.result == 'success'
+              uses: actions/download-artifact@v4
+              with:
+                  name: examples-results-windows
+                  path: .windows-example-results
 
             - name: Install dependencies
               run: uv sync --frozen --group dev
@@ -134,6 +143,10 @@ jobs:
                       -n 4 \
                       -k "not 31_windows.py" \
                       || EXIT_CODE=$?
+
+                  if [ -d ".windows-example-results" ]; then
+                      cp .windows-example-results/*.json "$RESULTS_DIR"/ || true
+                  fi
 
                   TIMESTAMP="$(date -u '+%Y-%m-%d %H:%M:%S UTC')"
                   WORKFLOW_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
