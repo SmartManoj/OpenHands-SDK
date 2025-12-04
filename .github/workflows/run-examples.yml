@@ -249,5 +249,6 @@ jobs:
               with:
                   name: examples-results-windows
                   path: .example-test-results
+                  include-hidden-files: true
                   if-no-files-found: ignore
 
