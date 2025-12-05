@@ -20,17 +20,15 @@ permissions:
 
 jobs:
     test-examples:
-        if: ${{ github.event.label.name == 'test-examples' || contains(fromJson('["workflow_dispatch","schedule"]'), github.event_name) }}
+        if: github.event.label.name == 'test-examples' || github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
         runs-on: blacksmith-2vcpu-ubuntu-2404
         timeout-minutes: 60
         steps:
             - name: Wait for agent server to finish build
-              if: >
-                  github.event_name == 'pull_request' &&
-                  github.event.pull_request.head.repo.full_name == github.repository
+              if: github.event_name == 'pull_request'
               uses: lewagon/wait-on-check-action@v1.4.1
               with:
-                  ref: ${{ github.event.pull_request.head.sha }}
+                  ref: ${{ github.event.pull_request.head.ref }}
                   check-name: Build & Push (python-amd64)
                   repo-token: ${{ secrets.GITHUB_TOKEN }}
                   wait-interval: 10
@@ -58,8 +56,8 @@ jobs:
               shell: bash
               env:
                   LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
-                  LLM_MODEL: litellm_proxy/claude-haiku-4-5-20251001
-                  LLM_BASE_URL: https://llm-proxy.app.all-hands.dev
+                  LLM_MODEL: openhands/claude-haiku-4-5-20251001
+                  LLM_BASE_URL: ${{ secrets.LLM_BASE_URL }}
                   RUNTIME_API_KEY: ${{ secrets.RUNTIME_API_KEY }}
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   PR_NUMBER: ${{ github.event.pull_request.number }}
@@ -131,8 +129,7 @@ jobs:
                   uv run pytest tests/examples/test_examples.py \
                       --run-examples \
                       --examples-results-dir "$RESULTS_DIR" \
-                      -n 4 \
-                      || EXIT_CODE=$?
+                      -n 4 || EXIT_CODE=$?
 
                   TIMESTAMP="$(date -u '+%Y-%m-%d %H:%M:%S UTC')"
                   WORKFLOW_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"

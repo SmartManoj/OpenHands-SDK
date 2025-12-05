@@ -15,9 +15,6 @@ import sys
 from pathlib import Path
 
 
-EXEMPT_EXAMPLES: set[str] = set()
-
-
 def find_documented_examples(docs_path: Path) -> set[str]:
     """
     Find all example file references in the docs repository.
@@ -151,13 +148,6 @@ def main() -> None:
     print("\n📋 Scanning agent-sdk examples...")
     agent_examples = find_agent_sdk_examples(agent_sdk_root)
     print(f"   Found {len(agent_examples)} example file(s)")
-
-    exempt_present = agent_examples & EXEMPT_EXAMPLES
-    if exempt_present:
-        print("   Exempting the following example(s) from documentation check:")
-        for example in sorted(exempt_present):
-            print(f"     - {example}")
-        agent_examples -= exempt_present
 
     # Find all documented examples in docs
     print("\n📄 Scanning docs repository...")
