@@ -349,6 +349,12 @@ def test_windows_terminal_working_directory_persistence(windows_session, temp_di
     obs = windows_session.execute(ExecuteBashAction(command=f"cd '{dir1}'"))
     assert obs.exit_code == 0
 
+    # Verify we're in dir1
+    obs = windows_session.execute(ExecuteBashAction(command="(Get-Location).Path"))
+    expected_path = os.path.realpath(dir1).lower().replace("\\", "/")
+    actual_path = os.path.realpath(obs.text.strip()).lower().replace("\\", "/")
+    assert expected_path == actual_path
+
     # Create file in current directory (should be dir1)
     obs = windows_session.execute(
         ExecuteBashAction(command='echo "In dir1" > file1.txt')
@@ -356,6 +362,30 @@ def test_windows_terminal_working_directory_persistence(windows_session, temp_di
     assert obs.exit_code == 0
 
     # Verify file was created in dir1
+    assert os.path.exists(os.path.join(dir1, "file1.txt"))
+    assert not os.path.exists(os.path.join(dir2, "file1.txt"))
+
+    # Change to dir2
+    obs = windows_session.execute(ExecuteBashAction(command=f"cd '{dir2}'"))
+    assert obs.exit_code == 0
+
+    # Verify we're in dir2
+    obs = windows_session.execute(ExecuteBashAction(command="(Get-Location).Path"))
+    expected_path = os.path.realpath(dir2).lower().replace("\\", "/")
+    actual_path = os.path.realpath(obs.text.strip()).lower().replace("\\", "/")
+    assert expected_path == actual_path
+
+    # Create file in current directory (should be dir2)
+    obs = windows_session.execute(
+        ExecuteBashAction(command='echo "In dir2" > file2.txt')
+    )
+    assert obs.exit_code == 0
+
+    # Verify file was created in dir2
+    assert os.path.exists(os.path.join(dir2, "file2.txt"))
+    assert not os.path.exists(os.path.join(dir1, "file2.txt"))
+
+    # Verify file from dir1 is still there (working directory persistence)
     assert os.path.exists(os.path.join(dir1, "file1.txt"))
 
 
