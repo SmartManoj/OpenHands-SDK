@@ -390,6 +390,7 @@ def test_windows_terminal_working_directory_persistence(windows_session, temp_di
 
 
 def test_windows_terminal_command_with_pipeline(windows_session):
+    """Test that PowerShell pipeline commands execute correctly."""
     obs = windows_session.execute(
         ExecuteBashAction(command='Write-Output "Hello" | ForEach-Object { $_ }')
     )
@@ -398,6 +399,7 @@ def test_windows_terminal_command_with_pipeline(windows_session):
 
 
 def test_windows_terminal_script_with_brackets(windows_session):
+    """Test that PowerShell script blocks with curly brackets execute correctly."""
     obs = windows_session.execute(
         ExecuteBashAction(command='if ($true) { Write-Output "OK" }')
     )
@@ -406,6 +408,7 @@ def test_windows_terminal_script_with_brackets(windows_session):
 
 
 def test_windows_terminal_command_containing_backtick(windows_session):
+    """Test that PowerShell backtick escape character is handled correctly."""
     obs = windows_session.execute(
         ExecuteBashAction(command='Write-Output "Hello` World"')
     )
