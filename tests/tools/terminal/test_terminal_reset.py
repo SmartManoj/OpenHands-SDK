@@ -1,5 +1,6 @@
 """Tests for bash terminal reset functionality."""
 
+import platform
 import tempfile
 import uuid
 
@@ -15,6 +16,8 @@ from openhands.tools.terminal import (
     TerminalObservation,
     TerminalTool,
 )
+
+IS_WINDOWS = platform.system() == "Windows"
 
 
 def _create_conv_state(working_dir: str) -> ConversationState:
@@ -33,31 +36,58 @@ def test_bash_reset_basic():
         tools = TerminalTool.create(_create_conv_state(temp_dir))
         tool = tools[0]
         try:
-            # Execute a command to set an environment variable
-            action = TerminalAction(command="export TEST_VAR=hello")
-            result = tool(action)
-            assert isinstance(result, TerminalObservation)
-            assert result.metadata.exit_code == 0
+            if IS_WINDOWS:
+                # Execute a command to set an environment variable (PowerShell)
+                action = TerminalAction(command="$env:TEST_VAR = 'hello'")
+                result = tool(action)
+                assert isinstance(result, TerminalObservation)
+                assert result.metadata.exit_code == 0
 
-            # Verify the variable is set
-            action = TerminalAction(command="echo $TEST_VAR")
-            result = tool(action)
-            assert isinstance(result, TerminalObservation)
-            assert "hello" in result.text
+                # Verify the variable is set
+                action = TerminalAction(command="Write-Output $env:TEST_VAR")
+                result = tool(action)
+                assert isinstance(result, TerminalObservation)
+                assert "hello" in result.text
 
-            # Reset the terminal
-            reset_action = TerminalAction(command="", reset=True)
-            reset_result = tool(reset_action)
-            assert isinstance(reset_result, TerminalObservation)
-            assert "Terminal session has been reset" in reset_result.text
-            assert reset_result.command == "[RESET]"
+                # Reset the terminal
+                reset_action = TerminalAction(command="", reset=True)
+                reset_result = tool(reset_action)
+                assert isinstance(reset_result, TerminalObservation)
+                assert "Terminal session has been reset" in reset_result.text
+                assert reset_result.command == "[RESET]"
 
-            # Verify the variable is no longer set after reset
-            action = TerminalAction(command="echo $TEST_VAR")
-            result = tool(action)
-            assert isinstance(result, TerminalObservation)
-            # The variable should be empty after reset
-            assert result.text.strip() == ""
+                # Verify the variable is no longer set after reset
+                action = TerminalAction(command="Write-Output $env:TEST_VAR")
+                result = tool(action)
+                assert isinstance(result, TerminalObservation)
+                # The variable should be empty after reset
+                assert result.text.strip() == ""
+            else:
+                # Execute a command to set an environment variable (Bash)
+                action = TerminalAction(command="export TEST_VAR=hello")
+                result = tool(action)
+                assert isinstance(result, TerminalObservation)
+                assert result.metadata.exit_code == 0
+
+                # Verify the variable is set
+                action = TerminalAction(command="echo $TEST_VAR")
+                result = tool(action)
+                assert isinstance(result, TerminalObservation)
+                assert "hello" in result.text
+
+                # Reset the terminal
+                reset_action = TerminalAction(command="", reset=True)
+                reset_result = tool(reset_action)
+                assert isinstance(reset_result, TerminalObservation)
+                assert "Terminal session has been reset" in reset_result.text
+                assert reset_result.command == "[RESET]"
+
+                # Verify the variable is no longer set after reset
+                action = TerminalAction(command="echo $TEST_VAR")
+                result = tool(action)
+                assert isinstance(result, TerminalObservation)
+                # The variable should be empty after reset
+                assert result.text.strip() == ""
         finally:
             tool.executor.close()
 
