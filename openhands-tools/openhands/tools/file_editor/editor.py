@@ -34,7 +34,6 @@ from openhands.tools.file_editor.utils.encoding import (
     with_encoding,
 )
 from openhands.tools.file_editor.utils.history import FileHistoryManager
-from openhands.tools.file_editor.utils.shell import run_shell_cmd
 
 
 logger = get_logger(__name__)

@@ -10,6 +10,7 @@ from openhands.tools.browser_use.definition import (
 )
 from openhands.tools.browser_use.impl import get_browser_executor_class
 
+
 BrowserToolExecutor = get_browser_executor_class()
 
 from .conftest import (
@@ -18,7 +19,9 @@ from .conftest import (
 )
 
 
-@patch.object(BrowserToolExecutor, "_ensure_chromium_available", return_value="/mock/chromium")
+@patch.object(
+    BrowserToolExecutor, "_ensure_chromium_available", return_value="/mock/chromium"
+)
 def test_browser_executor_initialization(mock_ensure_chromium):
     """Test that BrowserToolExecutor initializes correctly."""
     executor = BrowserToolExecutor()
@@ -30,7 +33,9 @@ def test_browser_executor_initialization(mock_ensure_chromium):
     assert executor._async_executor is not None
 
 
-@patch.object(BrowserToolExecutor, "_ensure_chromium_available", return_value="/mock/chromium")
+@patch.object(
+    BrowserToolExecutor, "_ensure_chromium_available", return_value="/mock/chromium"
+)
 def test_browser_executor_config_passing(mock_ensure_chromium):
     """Test that configuration is passed correctly."""
     executor = BrowserToolExecutor(

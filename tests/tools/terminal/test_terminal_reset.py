@@ -17,6 +17,7 @@ from openhands.tools.terminal import (
     TerminalTool,
 )
 
+
 IS_WINDOWS = platform.system() == "Windows"
 
 
