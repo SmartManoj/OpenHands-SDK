@@ -134,6 +134,8 @@ jobs:
 
     tools-tests-windows:
         runs-on: windows-latest
+        env:
+            PYTHONUTF8: 1
         steps:
             - name: Checkout
               uses: actions/checkout@v5
@@ -160,7 +162,11 @@ jobs:
               if: steps.changed.outputs.any_changed == 'true'
               run: uv sync --frozen --group dev
 
-            - name: Run Windows terminal tests with coverage
+            - name: Install Chromium for browser tests
+              if: steps.changed.outputs.any_changed == 'true'
+              run: uvx playwright install chromium --with-deps
+
+            - name: Run Windows tools tests with coverage
               if: steps.changed.outputs.any_changed == 'true'
               run: |
                   # Clean up any existing coverage file
@@ -171,8 +177,14 @@ jobs:
                     --cov-report=term-missing `
                     --cov-fail-under=0 `
                     --cov-config=pyproject.toml `
-                    tests/tools/terminal/test_windows_terminal.py
-                  # Rename coverage file for upload
+                    tests/tools `
+                    --ignore=tests/tools/terminal/test_session_factory.py `
+                    --ignore=tests/tools/terminal/test_terminal_session.py `
+                    --ignore=tests/tools/terminal/test_shell_path_configuration.py `
+                    --ignore=tests/tools/terminal/test_shutdown_handling.py `
+                    --ignore=tests/tools/terminal/test_conversation_cleanup.py `
+                    --ignore=tests/tools/terminal/test_terminal_tool_auto_detection.py `
+                    --ignore=tests/tools/file_editor/test_memory_usage.py
                   if (Test-Path .coverage) {
                     Move-Item .coverage coverage-tools-windows.dat
                     Write-Host "Windows tools coverage file prepared for upload"

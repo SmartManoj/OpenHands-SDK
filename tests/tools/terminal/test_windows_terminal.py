@@ -349,6 +349,12 @@ def test_windows_terminal_working_directory_persistence(windows_session, temp_di
     obs = windows_session.execute(ExecuteBashAction(command=f"cd '{dir1}'"))
     assert obs.exit_code == 0
 
+    # Verify we're in dir1
+    obs = windows_session.execute(ExecuteBashAction(command="(Get-Location).Path"))
+    expected_path = os.path.realpath(dir1).lower().replace("\\", "/")
+    actual_path = os.path.realpath(obs.text.strip()).lower().replace("\\", "/")
+    assert expected_path == actual_path
+
     # Create file in current directory (should be dir1)
     obs = windows_session.execute(
         ExecuteBashAction(command='echo "In dir1" > file1.txt')
@@ -357,9 +363,34 @@ def test_windows_terminal_working_directory_persistence(windows_session, temp_di
 
     # Verify file was created in dir1
     assert os.path.exists(os.path.join(dir1, "file1.txt"))
+    assert not os.path.exists(os.path.join(dir2, "file1.txt"))
+
+    # Change to dir2
+    obs = windows_session.execute(ExecuteBashAction(command=f"cd '{dir2}'"))
+    assert obs.exit_code == 0
+
+    # Verify we're in dir2
+    obs = windows_session.execute(ExecuteBashAction(command="(Get-Location).Path"))
+    expected_path = os.path.realpath(dir2).lower().replace("\\", "/")
+    actual_path = os.path.realpath(obs.text.strip()).lower().replace("\\", "/")
+    assert expected_path == actual_path
+
+    # Create file in current directory (should be dir2)
+    obs = windows_session.execute(
+        ExecuteBashAction(command='echo "In dir2" > file2.txt')
+    )
+    assert obs.exit_code == 0
+
+    # Verify file was created in dir2
+    assert os.path.exists(os.path.join(dir2, "file2.txt"))
+    assert not os.path.exists(os.path.join(dir1, "file2.txt"))
+
+    # Verify file from dir1 is still there (working directory persistence)
+    assert os.path.exists(os.path.join(dir1, "file1.txt"))
 
 
 def test_windows_terminal_command_with_pipeline(windows_session):
+    """Test that PowerShell pipeline commands execute correctly."""
     obs = windows_session.execute(
         ExecuteBashAction(command='Write-Output "Hello" | ForEach-Object { $_ }')
     )
@@ -368,6 +399,7 @@ def test_windows_terminal_command_with_pipeline(windows_session):
 
 
 def test_windows_terminal_script_with_brackets(windows_session):
+    """Test that PowerShell script blocks with curly brackets execute correctly."""
     obs = windows_session.execute(
         ExecuteBashAction(command='if ($true) { Write-Output "OK" }')
     )
@@ -376,6 +408,7 @@ def test_windows_terminal_script_with_brackets(windows_session):
 
 
 def test_windows_terminal_command_containing_backtick(windows_session):
+    """Test that PowerShell backtick escape character is handled correctly."""
     obs = windows_session.execute(
         ExecuteBashAction(command='Write-Output "Hello` World"')
     )
