@@ -124,27 +124,34 @@ def test_bash_reset_with_command():
 
 
 def test_bash_reset_working_directory():
-    """Test that reset preserves the working directory."""
+    """Test that reset restores the original working directory."""
     with tempfile.TemporaryDirectory() as temp_dir:
         tools = TerminalTool.create(_create_conv_state(temp_dir))
         tool = tools[0]
         try:
-            # Check initial working directory
-            action = TerminalAction(command="pwd")
+            # Check initial working directory via metadata
+            action = TerminalAction(command="echo test")
             result = tool(action)
             assert isinstance(result, TerminalObservation)
-            assert temp_dir in result.text
+            # Normalize paths for comparison (Windows uses backslash)
+            result_cwd = result.metadata.working_dir.replace("/", "\\")
+            temp_dir_normalized = temp_dir.replace("/", "\\")
+            assert temp_dir_normalized.lower() in result_cwd.lower()
 
             # Change directory
-            action = TerminalAction(command="cd /home")
+            if IS_WINDOWS:
+                action = TerminalAction(command="cd $env:USERPROFILE")
+            else:
+                action = TerminalAction(command="cd /tmp")
             result = tool(action)
             assert isinstance(result, TerminalObservation)
 
             # Verify directory changed
-            action = TerminalAction(command="pwd")
+            action = TerminalAction(command="echo test")
             result = tool(action)
             assert isinstance(result, TerminalObservation)
-            assert "/home" in result.text
+            result_cwd = result.metadata.working_dir.replace("/", "\\")
+            assert temp_dir_normalized.lower() not in result_cwd.lower()
 
             # Reset the terminal
             reset_action = TerminalAction(command="", reset=True)
@@ -152,11 +159,12 @@ def test_bash_reset_working_directory():
             assert isinstance(reset_result, TerminalObservation)
             assert "Terminal session has been reset" in reset_result.text
 
-            # Verify working directory is back to original
-            action = TerminalAction(command="pwd")
+            # Verify working directory is back to original after reset
+            action = TerminalAction(command="echo test")
             result = tool(action)
             assert isinstance(result, TerminalObservation)
-            assert temp_dir in result.text
+            result_cwd = result.metadata.working_dir.replace("/", "\\")
+            assert temp_dir_normalized.lower() in result_cwd.lower()
         finally:
             tool.executor.close()
 
