@@ -33,11 +33,13 @@ def test_bash_tool_initialization():
         conv_state = _create_test_conv_state(temp_dir)
         tools = TerminalTool.create(conv_state)
         tool = tools[0]
-
-        # Check that the tool has the correct name and properties
-        assert tool.name == "terminal"
-        assert tool.executor is not None
-        assert tool.action_type == TerminalAction
+        try:
+            # Check that the tool has the correct name and properties
+            assert tool.name == "terminal"
+            assert tool.executor is not None
+            assert tool.action_type == TerminalAction
+        finally:
+            tool.executor.close()
 
 
 def test_bash_tool_with_username():
@@ -46,11 +48,13 @@ def test_bash_tool_with_username():
         conv_state = _create_test_conv_state(temp_dir)
         tools = TerminalTool.create(conv_state, username="testuser")
         tool = tools[0]
-
-        # Check that the tool has the correct name and properties
-        assert tool.name == "terminal"
-        assert tool.executor is not None
-        assert tool.action_type == TerminalAction
+        try:
+            # Check that the tool has the correct name and properties
+            assert tool.name == "terminal"
+            assert tool.executor is not None
+            assert tool.action_type == TerminalAction
+        finally:
+            tool.executor.close()
 
 
 def test_bash_tool_execution():
@@ -59,17 +63,19 @@ def test_bash_tool_execution():
         conv_state = _create_test_conv_state(temp_dir)
         tools = TerminalTool.create(conv_state)
         tool = tools[0]
+        try:
+            # Create an action
+            action = TerminalAction(command="echo 'Hello, World!'")
 
-        # Create an action
-        action = TerminalAction(command="echo 'Hello, World!'")
+            # Execute the action
+            result = tool(action)
 
-        # Execute the action
-        result = tool(action)
-
-        # Check the result
-        assert result is not None
-        assert isinstance(result, TerminalObservation)
-        assert "Hello, World!" in result.text
+            # Check the result
+            assert result is not None
+            assert isinstance(result, TerminalObservation)
+            assert "Hello, World!" in result.text
+        finally:
+            tool.executor.close()
 
 
 def test_bash_tool_working_directory():
@@ -78,16 +84,18 @@ def test_bash_tool_working_directory():
         conv_state = _create_test_conv_state(temp_dir)
         tools = TerminalTool.create(conv_state)
         tool = tools[0]
+        try:
+            # Create an action to check current directory
+            action = TerminalAction(command="pwd")
 
-        # Create an action to check current directory
-        action = TerminalAction(command="pwd")
+            # Execute the action
+            result = tool(action)
 
-        # Execute the action
-        result = tool(action)
-
-        # Check that the working directory is correct
-        assert isinstance(result, TerminalObservation)
-        assert temp_dir in result.text
+            # Check that the working directory is correct
+            assert isinstance(result, TerminalObservation)
+            assert temp_dir in result.text
+        finally:
+            tool.executor.close()
 
 
 def test_bash_tool_to_openai_tool():
@@ -96,12 +104,14 @@ def test_bash_tool_to_openai_tool():
         conv_state = _create_test_conv_state(temp_dir)
         tools = TerminalTool.create(conv_state)
         tool = tools[0]
+        try:
+            # Convert to OpenAI tool format
+            openai_tool = tool.to_openai_tool()
 
-        # Convert to OpenAI tool format
-        openai_tool = tool.to_openai_tool()
-
-        # Check the format
-        assert openai_tool["type"] == "function"
-        assert openai_tool["function"]["name"] == "terminal"
-        assert "description" in openai_tool["function"]
-        assert "parameters" in openai_tool["function"]
+            # Check the format
+            assert openai_tool["type"] == "function"
+            assert openai_tool["function"]["name"] == "terminal"
+            assert "description" in openai_tool["function"]
+            assert "parameters" in openai_tool["function"]
+        finally:
+            tool.executor.close()
