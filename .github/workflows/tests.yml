@@ -136,6 +136,9 @@ jobs:
         runs-on: windows-latest
         env:
             PYTHONUTF8: 1
+            TIMEOUT_BrowserStartEvent: 120
+            TIMEOUT_BrowserLaunchEvent: 120
+            TIMEOUT_BrowserConnectedEvent: 120
         steps:
             - name: Checkout
               uses: actions/checkout@v5
