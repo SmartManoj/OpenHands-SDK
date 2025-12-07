@@ -6,7 +6,9 @@ import pytest
 
 from openhands.sdk.tool.schema import TextContent
 from openhands.tools.browser_use.definition import BrowserObservation
-from openhands.tools.browser_use.impl import BrowserToolExecutor
+from openhands.tools.browser_use.impl import get_browser_executor_class
+
+BrowserToolExecutor = get_browser_executor_class()
 
 
 @pytest.fixture

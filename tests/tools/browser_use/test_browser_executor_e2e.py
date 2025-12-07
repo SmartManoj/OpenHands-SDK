@@ -20,7 +20,9 @@ from openhands.tools.browser_use.definition import (
     BrowserSwitchTabAction,
     BrowserTypeAction,
 )
-from openhands.tools.browser_use.impl import BrowserToolExecutor
+from openhands.tools.browser_use.impl import get_browser_executor_class
+
+BrowserToolExecutor = get_browser_executor_class()
 
 
 # Test HTML content for browser operations
