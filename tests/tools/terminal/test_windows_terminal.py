@@ -121,9 +121,7 @@ def test_windows_terminal_file_operations(windows_session, temp_dir):
     assert os.path.exists(test_file)
 
     # Read the file
-    obs = windows_session.execute(
-        TerminalAction(command=f'Get-Content "{test_file}"')
-    )
+    obs = windows_session.execute(TerminalAction(command=f'Get-Content "{test_file}"'))
     assert "Test content" in obs.text
 
 
@@ -270,27 +268,19 @@ def test_windows_terminal_consecutive_commands(windows_session, temp_dir):
     test_file = os.path.join(temp_dir, "counter.txt")
 
     # Create file with initial value
-    obs1 = windows_session.execute(
-        TerminalAction(command=f'echo "1" > "{test_file}"')
-    )
+    obs1 = windows_session.execute(TerminalAction(command=f'echo "1" > "{test_file}"'))
     assert obs1.exit_code == 0
 
     # Read and verify
-    obs2 = windows_session.execute(
-        TerminalAction(command=f'Get-Content "{test_file}"')
-    )
+    obs2 = windows_session.execute(TerminalAction(command=f'Get-Content "{test_file}"'))
     assert "1" in obs2.text
 
     # Update the file
-    obs3 = windows_session.execute(
-        TerminalAction(command=f'echo "2" > "{test_file}"')
-    )
+    obs3 = windows_session.execute(TerminalAction(command=f'echo "2" > "{test_file}"'))
     assert obs3.exit_code == 0
 
     # Read and verify update
-    obs4 = windows_session.execute(
-        TerminalAction(command=f'Get-Content "{test_file}"')
-    )
+    obs4 = windows_session.execute(TerminalAction(command=f'Get-Content "{test_file}"'))
     assert "2" in obs4.text
 
 
@@ -356,9 +346,7 @@ def test_windows_terminal_working_directory_persistence(windows_session, temp_di
     assert expected_path == actual_path
 
     # Create file in current directory (should be dir1)
-    obs = windows_session.execute(
-        TerminalAction(command='echo "In dir1" > file1.txt')
-    )
+    obs = windows_session.execute(TerminalAction(command='echo "In dir1" > file1.txt'))
     assert obs.exit_code == 0
 
     # Verify file was created in dir1
@@ -376,9 +364,7 @@ def test_windows_terminal_working_directory_persistence(windows_session, temp_di
     assert expected_path == actual_path
 
     # Create file in current directory (should be dir2)
-    obs = windows_session.execute(
-        TerminalAction(command='echo "In dir2" > file2.txt')
-    )
+    obs = windows_session.execute(TerminalAction(command='echo "In dir2" > file2.txt'))
     assert obs.exit_code == 0
 
     # Verify file was created in dir2
@@ -409,8 +395,6 @@ def test_windows_terminal_script_with_brackets(windows_session):
 
 def test_windows_terminal_command_containing_backtick(windows_session):
     """Test that PowerShell backtick escape character is handled correctly."""
-    obs = windows_session.execute(
-        TerminalAction(command='Write-Output "Hello` World"')
-    )
+    obs = windows_session.execute(TerminalAction(command='Write-Output "Hello` World"'))
     assert obs.exit_code == 0
     assert "Hello World" in obs.text
